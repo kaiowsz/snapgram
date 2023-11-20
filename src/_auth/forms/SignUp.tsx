@@ -1,15 +1,13 @@
-import React from "react"
-
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import Loader  from "@/components/shared/Loader"
 
+import { Link } from "react-router-dom"
 import { zodResolver } from "@hookform/resolvers/zod"
-
-import * as z from "zod";
-import { useForm } from "react-hook-form";
 import { SignUpValidation } from "@/lib/validation"
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
 const VASCO = z.object({
   username: z.string().min(2).max(50)
@@ -17,7 +15,7 @@ const VASCO = z.object({
 
 const SignUp = () => {
 
-  const isLoading = true;
+  const isLoading = false;
 
   const form = useForm<z.infer<typeof SignUpValidation>>({
     resolver: zodResolver(SignUpValidation),
@@ -83,6 +81,8 @@ const SignUp = () => {
           <Button type="submit" className="shad-button_primary">
             {isLoading ? (<div className="flex-center gap-2"> <Loader /> Loading... </div>) : "Sign Up"}
           </Button>
+
+          <p className="text-small-regular text-light-2 text-center mt-2">Already have an account? <Link to="/signin" className="text-primary-500 text-small-semibold ml-1 hover:text-primary-600 duration-100">Login</Link> </p>
         </form>
       </div>
     </Form>
