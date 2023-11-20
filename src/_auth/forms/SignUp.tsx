@@ -2,20 +2,28 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Loader  from "@/components/shared/Loader"
+import { useToast } from "@/components/ui/use-toast"
 
 import { Link } from "react-router-dom"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SignUpValidation } from "@/lib/validation"
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { createUserAccount } from "@/lib/appwrite/api"
+import { useCreateUserAccount, useSignInAccount } from "@/lib/react-query/queriesAndMutations"
+
 
 const VASCO = z.object({
   username: z.string().min(2).max(50)
 })
 
 const SignUp = () => {
+  
+  const { toast } = useToast();
+  
+  const { mutateAsync: createUserAccount, isLoading: isCreatingUser } = useCreateUserAccount();
 
-  const isLoading = false;
+  const { mutateAsync: signInAccount, isLoading: isSigningIn } = useSignInAccount()
 
   const form = useForm<z.infer<typeof SignUpValidation>>({
     resolver: zodResolver(SignUpValidation),
@@ -27,8 +35,31 @@ const SignUp = () => {
     }
   })
 
-  function onSubmit(values: z.infer<typeof SignUpValidation>) {
-    console.log(values)
+  async function onSubmit(values: z.infer<typeof SignUpValidation>) {
+
+    const newUser = await createUserAccount(values);
+
+    if(!newUser) {
+      return toast({
+        title: "de uerrado kkkkkkkkkkkkkk",
+        description: "sei oq deu nao"
+      })
+    }
+
+    const session = await signInAccount({
+      email: values.email,
+      password: values.password
+    })
+
+    if(!session) {
+      return toast({
+        title: "Sign in failed. Please try again."
+      })
+    }
+
+    
+
+
   }
 
   return (
@@ -79,7 +110,7 @@ const SignUp = () => {
             </FormItem>
           )}/>
           <Button type="submit" className="shad-button_primary">
-            {isLoading ? (<div className="flex-center gap-2"> <Loader /> Loading... </div>) : "Sign Up"}
+            {isCreatingUser ? (<div className="flex-center gap-2"> <Loader /> Loading... </div>) : "Sign Up"}
           </Button>
 
           <p className="text-small-regular text-light-2 text-center mt-2">Already have an account? <Link to="/signin" className="text-primary-500 text-small-semibold ml-1 hover:text-primary-600 duration-100">Login</Link> </p>

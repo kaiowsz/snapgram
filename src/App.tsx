@@ -8,6 +8,8 @@ import RootLayout from "./_root/RootLayout"
 
 import { Home } from "./_root/pages"
 
+import { Toaster } from "./components/ui/toaster"
+
 const App = () => {
   return (
     <main className="flex h-screen">
@@ -20,6 +22,8 @@ const App = () => {
             <Route element={ <RootLayout /> } ></Route>
             <Route index element={<Home />} />
         </Routes>
+
+        <Toaster />
     </main>
   )
 }
