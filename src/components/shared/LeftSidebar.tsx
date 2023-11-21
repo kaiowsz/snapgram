@@ -5,11 +5,15 @@ import { useEffect } from "react"
 import { useSignOutAccount } from "@/lib/react-query/queriesAndMutations";
 import { sidebarLinks } from "@/constants";
 import { INavLink } from "@/types";
+import { useLocation } from "react-router-dom";
+import { Button } from "../ui/button";
 
 const LeftSidebar = () => {
   const { user } = useUserContext();
   const navigate = useNavigate();
   const { mutate: signOut, isSuccess } = useSignOutAccount()
+
+  const { pathname } = useLocation()
 
 
   useEffect(() => {
@@ -37,10 +41,13 @@ const LeftSidebar = () => {
 
         <ul className="flex flex-col gap-6">
           {sidebarLinks.map((link: INavLink) => {
+
+            const isActive = pathname === link.route
+
             return (
-              <li className="leftsidebar-link" key={link.label}>
+              <li className={`leftsidebar-link group ${isActive && "bg-primary-500"}`} key={link.label}>
                 <NavLink to={link.route} className="flex gap-4 items-center p-4">
-                  <img src={link.imgUrl} alt={link.label} className="group-hover:invert-white" />
+                  <img src={link.imgUrl} alt={link.label} className={`group-hover:invert-white ${isActive && "invert-white"}`} />
                   {link.label}
                 </NavLink>
               </li>
@@ -48,6 +55,11 @@ const LeftSidebar = () => {
             })}
         </ul>
       </div>
+
+      <Button variant="ghost" className="shad-button_ghost" onClick={() => signOut()}>
+        <img src="/assets/logout.svg" alt="Logout" />
+        <p className="small-medium lg:base-medium">Logout</p>
+      </Button>
     </nav>
   )
 }
