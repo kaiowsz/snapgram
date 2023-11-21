@@ -36,8 +36,7 @@ const SignIn = () => {
       password: values.password
     })
 
-    if(!session) {
-      console.log("ok")
+    if(session.error) {
       return toast({
         title: "Sign in failed. Please, try again."
       })

@@ -1,8 +1,10 @@
 import { useUserContext } from "@/context/AuthContext"
-import { Link } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react"
 import { useSignOutAccount } from "@/lib/react-query/queriesAndMutations";
+import { sidebarLinks } from "@/constants";
+import { INavLink } from "@/types";
 
 const LeftSidebar = () => {
   const { user } = useUserContext();
@@ -34,11 +36,16 @@ const LeftSidebar = () => {
         </Link>
 
         <ul className="flex flex-col gap-6">
-          <Link></Link>
-          <Link></Link>
-          <Link></Link>
-          <Link></Link>
-          <Link></Link>
+          {sidebarLinks.map((link: INavLink) => {
+            return (
+              <li className="leftsidebar-link" key={link.label}>
+                <NavLink to={link.route} className="flex gap-4 items-center p-4">
+                  <img src={link.imgUrl} alt={link.label} className="group-hover:invert-white" />
+                  {link.label}
+                </NavLink>
+              </li>
+            )
+            })}
         </ul>
       </div>
     </nav>
