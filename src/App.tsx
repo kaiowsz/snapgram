@@ -8,7 +8,7 @@ import RootLayout from "./_root/RootLayout"
 
 import { Home } from "./_root/pages"
 
-import { Toaster } from "./components/ui/toaster"
+import { Toaster } from "react-hot-toast"
 
 const App = () => {
   return (
@@ -19,8 +19,9 @@ const App = () => {
                 <Route path="/signup" element={ <SignUp /> } />
             </Route>
 
-            <Route element={ <RootLayout /> } ></Route>
-            <Route index element={<Home />} />
+            <Route element={ <RootLayout /> } >
+              <Route index element={<Home />} />
+            </Route>
         </Routes>
 
         <Toaster />
