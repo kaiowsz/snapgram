@@ -6,7 +6,7 @@ import SignUp from "./_auth/forms/SignUp"
 import AuthLayout from "./_auth/AuthLayout"
 import RootLayout from "./_root/RootLayout"
 
-import { Home } from "./_root/pages"
+import { Home, AllUsers, CreatePost, PostDetails, Profile, Saved, UpdatePost, UpdateProfile, Explore } from "./_root/pages"
 
 import { Toaster } from "react-hot-toast"
 
@@ -21,8 +21,8 @@ const App = () => {
 
             <Route element={ <RootLayout /> } >
               <Route index element={<Home />} />
-              <Route path="/explore" element={ <Explore/> }/>
               <Route path="/saved" element={ <Saved/> }/>
+              <Route path="/explore" element={ <Explore/> }/>
               <Route path="/all-users" element={ <AllUsers/> }/>
               <Route path="/create-post" element={ <CreatePost/> }/>
               <Route path="/update-post/:id" element={ <UpdatePost/> }/>
