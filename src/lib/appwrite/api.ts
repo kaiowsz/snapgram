@@ -431,3 +431,24 @@ export async function getUserById(userId: string) {
         return null
     }
 }
+
+export async function getAllUsers() {
+
+    try {
+        const users = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.userCollectionId,
+            [Query.orderDesc("$createdAt")]
+        )
+
+
+        if(!users) {
+            throw Error
+        }
+
+        return users
+
+    } catch (error) {
+        console.log(error)
+    }
+}
