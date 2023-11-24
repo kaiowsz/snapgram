@@ -5,18 +5,24 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useUserContext } from "@/context/AuthContext"
+import { useGetUserById, useUpdateUser } from "@/lib/react-query/queriesAndMutations"
 import { ProfileValidation } from "@/lib/validation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { useNavigate } from "react-router-dom"
+import toast from "react-hot-toast"
+import { useNavigate, useParams } from "react-router-dom"
 import * as z from "zod"
 
 
 
 const UpdateProfile = () => {
 
-  const { user } = useUserContext()
+  const { user, setUser } = useUserContext()
   const navigate = useNavigate()
+  const { id } = useParams()
+  
+  const { data: currentUser } = useGetUserById(id || "")
+  const { mutateAsync: updateUser, isPending: isLoadingUpdate } = useUpdateUser();
 
   const form = useForm<z.infer<typeof ProfileValidation>>({
     resolver: zodResolver(ProfileValidation),
@@ -29,11 +35,34 @@ const UpdateProfile = () => {
     }
   })
 
-  function handleUpdate() {
+  async function handleUpdate(value: z.infer<typeof ProfileValidation>) {
+
+    const updatedUser = await updateUser({
+      userId: currentUser.$id,
+      name: value.name,
+      bio: value.bio,
+      file: value.file,
+      imageUrl: currentUser?.imageUrl,
+      imageId: currentUser?.imageId,
+    })
+
+    if(!updatedUser) {
+      toast.error("Update user failed. Please try again.")
+    }
+
+    setUser({
+      ...user,
+      name: updatedUser?.name,
+      bio: updateUser?.bio,
+      imageUrl: updatedUser?.imageUrl,
+    })
+    return navigate(`/profile/${id}`)
+
+    
 
   }
 
-  if(!user) {
+  if(!currentUser) {
     return (
       <div className="w-full h-full flex-center">
         <Loader />
