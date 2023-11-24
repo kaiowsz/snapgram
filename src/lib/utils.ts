@@ -54,3 +54,7 @@ export function multiFormatDateString(timestamp: string = ""): string {
 export const checkIsLiked = (likeList: string[], userId: string) => {
   return likeList.includes(userId);
 };
+
+export const convertFileToUrl = (file: File) => {
+  return URL.createObjectURL(file); 
+}
