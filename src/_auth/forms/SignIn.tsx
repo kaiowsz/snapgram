@@ -2,7 +2,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Loader  from "@/components/shared/Loader"
-import { useToast } from "@/components/ui/use-toast"
 
 import { Link, useNavigate } from "react-router-dom"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -11,13 +10,13 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useSignInAccount } from "@/lib/react-query/queriesAndMutations"
 import { useUserContext } from "@/context/AuthContext"
+import toast from "react-hot-toast"
 
 
 const SignIn = () => {
-  const { toast } = useToast();
   const navigate = useNavigate();
 
-  const { checkAuthUser, isLoading: isUserLoading } = useUserContext() 
+  const { checkAuthUser } = useUserContext() 
 
   const { mutateAsync: signInAccount, isPending } = useSignInAccount()
 
@@ -31,15 +30,16 @@ const SignIn = () => {
 
   async function onSubmit(values: z.infer<typeof SignInValidation>) {
 
-    const session = await signInAccount({
+    const session  = await signInAccount({
       email: values.email,
       password: values.password
     })
 
-    if(session.error) {
-      return toast({
-        title: "Sign in failed. Please, try again."
-      })
+    console.log(session)
+
+    if(typeof session === "string") {
+      toast.error(session)
+      return
     }
 
     const isLoggedIn = await checkAuthUser();
@@ -50,7 +50,8 @@ const SignIn = () => {
       navigate("/")
 
     } else {
-      return toast({ title: "Sign up failed. Please, try again." })
+      toast.error("Sign up failed. Please, try again.")
+      return
     }
 
 

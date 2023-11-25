@@ -1,4 +1,3 @@
-import React from "react"
 import { useUserContext } from "@/context/AuthContext"
 import Loader from "@/components/shared/Loader"
 import { Link, Route, Routes, useLocation, useParams } from "react-router-dom"

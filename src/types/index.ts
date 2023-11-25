@@ -55,3 +55,24 @@ export type INewUser = {
     username: string;
     password: string;
 }
+
+export type Post = {
+    $collectionId: string;
+    $createdAt: string;
+    $databaseId: string;
+    $id: string;
+    $updatedAt: string;
+    caption: string;
+    creator: object;
+    imageId: string;
+    imageUrl: string;
+    likes: object[] | [];
+    location: string;
+    save: object[] | [];
+    tags: string[] | [];
+}
+
+export type ErrorType = {
+    code?: number;
+    message?: string;
+}

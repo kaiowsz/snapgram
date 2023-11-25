@@ -1,7 +1,6 @@
 import Loader from "@/components/shared/Loader"
 import UserCard from "@/components/shared/UserCard"
 import { useGetUsers } from "@/lib/react-query/queriesAndMutations"
-import React from "react"
 
 const AllUsers = () => {
 

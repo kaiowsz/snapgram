@@ -38,7 +38,7 @@ const UpdateProfile = () => {
   async function handleUpdate(value: z.infer<typeof ProfileValidation>) {
 
     const updatedUser = await updateUser({
-      userId: currentUser.$id,
+      userId: user.id,
       name: value.name,
       bio: value.bio,
       file: value.file,
@@ -53,7 +53,7 @@ const UpdateProfile = () => {
     setUser({
       ...user,
       name: updatedUser?.name,
-      bio: updateUser?.bio,
+      bio: updatedUser?.bio,
       imageUrl: updatedUser?.imageUrl,
     })
     return navigate(`/profile/${id}`)

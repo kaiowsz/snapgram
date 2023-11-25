@@ -1,5 +1,5 @@
 import { ID, Query } from "appwrite"
-import { INewPost, INewUser, IUpdatePost, IUpdateUser } from "@/types"
+import { ErrorType, INewPost, INewUser, IUpdatePost, IUpdateUser } from "@/types"
 import { account, appwriteConfig, avatars, databases, storage } from "./config";
 
 export async function createUserAccount(user: INewUser) {
@@ -27,8 +27,8 @@ export async function createUserAccount(user: INewUser) {
 
         return newUser
     } catch (error) {
-        console.log(error)
-        return error;
+        const newError = error as ErrorType
+        return newError.message
     }
 }
 
@@ -59,9 +59,8 @@ export async function signInAccount(user: {email: string; password: string}) {
 
         return session
     } catch (error) {
-        console.log(error)
-
-        return {error}
+        const newError = error as ErrorType
+        return newError.message
     }
 
 }

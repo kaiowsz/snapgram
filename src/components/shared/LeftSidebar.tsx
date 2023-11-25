@@ -12,7 +12,7 @@ import Loader from "./Loader";
 const LeftSidebar = () => {
   const { user } = useUserContext();
   const navigate = useNavigate();
-  const { mutate: signOut, isSuccess } = useSignOutAccount()
+  const { mutate: signOut, isSuccess, isPending } = useSignOutAccount()
 
   const { pathname } = useLocation()
 
@@ -62,9 +62,18 @@ const LeftSidebar = () => {
         </ul>
       </div>
 
-      <Button variant="ghost" className="shad-button_ghost" onClick={() => signOut()}>
-        <img src="/assets/logout.svg" alt="Logout" />
-        <p className="small-medium lg:base-medium">Logout</p>
+      <Button variant="ghost" className="shad-button_ghost" onClick={() => signOut()} disabled={isPending}>
+            {isPending ? (
+              <div>
+                <Loader />
+              </div>
+            ) : (
+              <img src="/assets/logout.svg" alt="Logout" />
+            )}
+
+        <p className="small-medium lg:base-medium">
+          Logout
+        </p>
       </Button>
     </nav>
   )

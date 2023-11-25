@@ -4,9 +4,10 @@ import { useSignOutAccount } from "@/lib/react-query/queriesAndMutations"
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useUserContext } from "@/context/AuthContext"
+import Loader from "./Loader"
 
 const Topbar = () => {
-  const { mutate: signOut, isSuccess } = useSignOutAccount()
+  const { mutate: signOut, isSuccess, isPending } = useSignOutAccount()
   const navigate = useNavigate();
   const { user } = useUserContext();
 
@@ -24,7 +25,11 @@ const Topbar = () => {
 
         <div className="flex gap-4">
           <Button variant="ghost" className="shad-button_ghost" onClick={() => signOut()}>
-            <img src="/assets/logout.svg" alt="Logout" />
+            {isPending ? (
+              <Loader />
+              ) : (
+                <img src="/assets/logout.svg" alt="Logout" />
+            )}
           </Button>
 
           <Link to={`/profile/${user.id}`} className="flex-center gap-3">

@@ -36,10 +36,10 @@ const SignUp = () => {
 
   async function onSubmit(values: z.infer<typeof SignUpValidation>) {
 
-    const newUser: any = await createUserAccount(values);
+    const newUser = await createUserAccount(values);
 
-    if(newUser.code === 409) {
-      return toast.error(newUser.message)
+    if(typeof newUser === "string") {
+      return toast.error(newUser)
     }
 
     const session = await signInAccount({
@@ -47,8 +47,9 @@ const SignUp = () => {
       password: values.password
     })
 
-    if(session.error) {
-      return toast.error(session.error.message)
+    if(typeof session === "string") {
+      toast.error(session)
+      return
     }
 
     const isLoggedIn = await checkAuthUser();
