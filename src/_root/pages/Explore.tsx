@@ -22,7 +22,7 @@ const Explore = () => {
     if(inView && !searchValue) {
       fetchNextPage()
     }
-  }, [fetchNextPage, inView, searchValue])
+  }, [inView, searchValue, fetchNextPage])
 
   if(!posts) {
     return (
@@ -31,10 +31,8 @@ const Explore = () => {
       </div>
     )
   }
-
   
   const shouldShowSearchResults = searchValue !== "";
-  console.log(shouldShowSearchResults)
   
   const shouldShowPosts = !shouldShowSearchResults && posts.pages.every((item) => item?.documents.length === 0)
 
