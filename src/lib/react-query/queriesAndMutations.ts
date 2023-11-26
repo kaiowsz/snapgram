@@ -2,6 +2,7 @@ import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tansta
 import { createPost, createUserAccount, deletePost, deleteSavedPost, getAllUsers, getCurrentUser, getInfinitePosts, getPostById, getRecentPosts, getUserById, likePost, savePost, searchPosts, signInAccount, signOutAccount, updatePost, updateUser } from "../appwrite/api"
 import { INewPost, INewUser, IUpdatePost, IUpdateUser } from "@/types"
 import { QUERY_KEYS } from "./queryKeys"
+import { Models } from "appwrite"
 
 export function useCreateUserAccount() {
     return useMutation({
@@ -142,20 +143,25 @@ export function useDeletePost() {
 }
 
 export function useGetPosts() {
+
+    
     return useInfiniteQuery({
         queryKey: [QUERY_KEYS.GET_INFINITE_POSTS],
+        /*
+        @ts-expect-error: Unreachable error.
+        */
         queryFn: getInfinitePosts,
-        getNextPageParam: (lastPage) => {
-            if(lastPage && lastPage.documents.length === 0) {
-                return null
-            }
-
-            const lastId = lastPage?.documents[lastPage?.documents.length - 1].$id;
-
-            return lastId
+        getNextPageParam: (lastPage: Models.DocumentList<Models.Document> | undefined) => {
+             
+        if (lastPage && lastPage.documents.length === 0) {
+            return null;
         }
-    })
-}
+        const lastId = lastPage?.documents[lastPage.documents.length - 1].$id;
+        return lastId;
+
+    },
+});
+};
 
 export function useGetUsers() {
     return useQuery({

@@ -2,6 +2,10 @@ import { ID, Query } from "appwrite"
 import { ErrorType, INewPost, INewUser, IUpdatePost, IUpdateUser } from "@/types"
 import { account, appwriteConfig, avatars, databases, storage } from "./config";
 
+type getInfinitePostsProps = {
+    pageParam?: number
+} 
+
 export async function createUserAccount(user: INewUser) {
     try {
         const newAccount = await account.create(
@@ -362,7 +366,8 @@ export async function deletePost(postId: string, imageId: string) {
     }
 }
 
-export async function getInfinitePosts({pageParam}: {pageParam: number}) {
+
+export async function getInfinitePosts({pageParam}: getInfinitePostsProps) {
     const queries: string[] = [Query.orderDesc("$updatedAt"), Query.limit(12)]
 
     if(pageParam) {

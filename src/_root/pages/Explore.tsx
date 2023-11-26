@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 
 import GridPostList from "@/components/shared/GridPostList"
 import Loader from "@/components/shared/Loader"
@@ -22,7 +22,7 @@ const Explore = () => {
     if(inView && !searchValue) {
       fetchNextPage()
     }
-  }, [inView, searchValue])
+  }, [fetchNextPage, inView, searchValue])
 
   if(!posts) {
     return (
@@ -32,7 +32,10 @@ const Explore = () => {
     )
   }
 
+  
   const shouldShowSearchResults = searchValue !== "";
+  console.log(shouldShowSearchResults)
+  
   const shouldShowPosts = !shouldShowSearchResults && posts.pages.every((item) => item?.documents.length === 0)
 
   return (
@@ -62,7 +65,7 @@ const Explore = () => {
           <p className="text-light-4 mt-10 text-center w-full">End of posts</p>
         ): (
           posts.pages.map((item, index: number) => (
-            <GridPostList key={`page-${index}`} posts={item.documents} />
+            <GridPostList key={`page-${index}`} posts={item?.documents} />
           ))
         )}
       </div>

@@ -20,7 +20,7 @@ const LeftSidebar = () => {
   useEffect(() => {
     if(isSuccess) navigate(0)
     
-  }, [isSuccess])
+  }, [isSuccess, navigate])
   
 
   return (
