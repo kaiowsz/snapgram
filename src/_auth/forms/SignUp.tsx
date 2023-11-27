@@ -67,9 +67,9 @@ const SignUp = () => {
     <Form {...form}>
       <div className="sm:w-420 flex-center flex-col">
 
-        <img src="/images/logo.svg" alt="Logo" />
+        <img src="/images/logo_black_1.png" alt="Logo" width={160} />
         <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12">Create a new account</h2>
-        <p className="text-light-3 small-medium md:base-regular mt-2">To use Snapgram, enter your account details</p>
+        <p className="text-light-3 small-medium md:base-regular mt-2">To use KyHub, enter your account details</p>
 
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5 w-full mt-4">
 

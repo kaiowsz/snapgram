@@ -17,6 +17,7 @@ const PostDetails = () => {
   const { user } = useUserContext()
 
   const handleDeletePost = () => {
+
     deletePost({ 
       postId: id || "",
       imageId: post?.imageId
