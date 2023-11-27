@@ -19,6 +19,9 @@ const initialState = {
     setUser: () => {},
     setIsAuthenticated: () => {},
     checkAuthUser: async () => false as boolean,
+    openModal: false,
+    setOpenModal: () => {}
+
 }
 
 const AuthContext = createContext<IContextType>(initialState)
@@ -29,6 +32,7 @@ const AuthProvider = ({children}: { children: React.ReactNode }) => {
     const [user, setUser] = useState<IUser>(initialUser)
     const [isLoading, setIsLoading] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false)
+    const [openModal, setOpenModal] = useState(false)
 
 
     async function checkAuthUser() {
@@ -77,7 +81,9 @@ const AuthProvider = ({children}: { children: React.ReactNode }) => {
     const value = {
         user,
         setUser,
+        openModal,
         isLoading,
+        setOpenModal,
         checkAuthUser,
         isAuthenticated,
         setIsAuthenticated,

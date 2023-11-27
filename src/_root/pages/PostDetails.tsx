@@ -1,33 +1,31 @@
 import Loader from "@/components/shared/Loader"
+import ModalDelete from "@/components/shared/ModalDelete"
 import PostStats from "@/components/shared/PostStats"
 import { Button } from "@/components/ui/button"
 import { useUserContext } from "@/context/AuthContext"
-import { useDeletePost, useGetPostById } from "@/lib/react-query/queriesAndMutations"
+import { useGetPostById } from "@/lib/react-query/queriesAndMutations"
 import { formatDateString } from "@/lib/utils"
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 
 const PostDetails = () => {
-
-  const { mutate: deletePost } = useDeletePost();
-  const navigate = useNavigate()
 
   const { id } = useParams()
   const { data: post, isPending } = useGetPostById(id || "")
 
-  const { user } = useUserContext()
+  const { user, openModal, setOpenModal } = useUserContext()
 
   const handleDeletePost = () => {
-
-    deletePost({ 
-      postId: id || "",
-      imageId: post?.imageId
-    })
-
-    navigate(-1)
+    setOpenModal(!openModal)
   }
   
   return (
     <div className="post_details-container">
+      <ModalDelete 
+      openModal={openModal} 
+      setOpenModal={setOpenModal}
+      id={id}
+      post={post}
+      />
       {isPending ? <Loader/> : (
         <div className="post_details-card">
           <img src={post?.imageUrl} alt="Creator" className="post_details-img" />
